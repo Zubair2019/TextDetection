@@ -1,7 +1,3 @@
-
-  
-# save_path_file = "/Users/mac/GitHub/TextDetection/output/1.xml"
-  
 import etree.ElementTree as gfg
 import os
 import pandas as pd
