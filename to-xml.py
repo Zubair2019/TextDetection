@@ -3,7 +3,11 @@
 # save_path_file = "/Users/mac/GitHub/TextDetection/output/1.xml"
   
 import etree.ElementTree as gfg
-
+import os
+import pandas as pd
+import numpy as np
+from os import listdir
+from os.path import isfile, join
 
 
 def GenerateXML(path,fileNameOutput,lst,count) :
@@ -75,7 +79,6 @@ def GenerateXML(path,fileNameOutput,lst,count) :
 
 def read_text(fileNameInput):
     print(fileNameInput)
-    import numpy as np
     A=np.array([0,0,0,0])
     file1 = open(fileNameInput, 'r')
     Lines = file1.readlines()
@@ -93,9 +96,9 @@ def read_text(fileNameInput):
 
 # Driver Code
 if __name__ == "__main__":
-    mypath = '/Users/mac/GitHub/TextDetection/input/'
-    from os import listdir
-    from os.path import isfile, join
+    mypath = os.path.realpath(__file__)
+    mypath = mypath.replace('to-xml.py','input/')
+    # print("PATH:",mypath)
     onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
     print(onlyfiles)
     for item in onlyfiles:
