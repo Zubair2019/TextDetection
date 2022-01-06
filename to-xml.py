@@ -6,7 +6,7 @@ from os import listdir
 from os.path import isfile, join
 
 
-def GenerateXML(path,fileNameOutput,lst,count) :
+def GenerateXML(in_path,out_path, fileNameOutput, lst, count) :
 	
 	root = gfg.Element("annotation")
 	
@@ -19,7 +19,7 @@ def GenerateXML(path,fileNameOutput,lst,count) :
 	m2.text = file
 	root.append (m2)
 	m3 = gfg.Element("path")
-	m3.text = str(path)+file
+	m3.text = str(in_path).replace('input','images')+file
 	root.append (m3)
 	m4 = gfg.Element("source")
 	root.append (m4)
@@ -70,7 +70,7 @@ def GenerateXML(path,fileNameOutput,lst,count) :
 	# xml_str = tree.toprettyxml(indent ="\t")
     
 	gfg.indent(tree, space='\t', level=0)
-	with open (path+'labelled/'+str(fileNameOutput).split('.')[0].split('_')[1]+'.xml', "wb") as files :
+	with open (out_path+str(fileNameOutput).split('.')[0].split('_')[1]+'.xml', "wb") as files :
 		tree.write(files)
 
 def read_text(fileNameInput):
@@ -91,11 +91,13 @@ def read_text(fileNameInput):
 
 # Driver Code
 if __name__ == "__main__":
-    mypath = os.path.realpath(__file__)
-    mypath = mypath.replace('to-xml.py','input/')
+    # mypath = os.path.realpath(__file__)
+    in_path = os.path.realpath(__file__).replace('to-xml.py','input/')
+    out_path = os.path.realpath(__file__).replace('to-xml.py','output/')
     # print("PATH:",mypath)
-    onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+    onlyfiles = [f for f in listdir(in_path) if isfile(join(in_path, f))]
     # print(onlyfiles)
     for item in onlyfiles:
-        lst1, count1 = read_text(mypath+item)
-        GenerateXML(mypath,item,lst1,count1)
+        print(item)
+        lst1, count1 = read_text(in_path+item)
+        GenerateXML(in_path,out_path,item,lst1,count1)
