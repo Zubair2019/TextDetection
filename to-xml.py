@@ -74,11 +74,10 @@ def GenerateXML(path,fileNameOutput,lst,count) :
 		tree.write(files)
 
 def read_text(fileNameInput):
-    print(fileNameInput)
+    # print(fileNameInput)
     A=np.array([0,0,0,0])
     file1 = open(fileNameInput, 'r')
     Lines = file1.readlines()
-    lst = []
     count = 0
     # Strips the newline character
     for line in Lines:
@@ -96,7 +95,7 @@ if __name__ == "__main__":
     mypath = mypath.replace('to-xml.py','input/')
     # print("PATH:",mypath)
     onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
-    print(onlyfiles)
+    # print(onlyfiles)
     for item in onlyfiles:
         lst1, count1 = read_text(mypath+item)
         GenerateXML(mypath,item,lst1,count1)
