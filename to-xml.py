@@ -93,7 +93,7 @@ def read_text(fileNameInput):
 if __name__ == "__main__":
     # mypath = os.path.realpath(__file__)
     in_path = os.path.realpath(__file__).replace('to-xml.py','input/')
-    out_path = os.path.realpath(__file__).replace('to-xml.py','output/')
+    out_path = os.path.realpath(__file__).replace('to-xml.py','images/')
     # print("PATH:",mypath)
     onlyfiles = [f for f in listdir(in_path) if isfile(join(in_path, f))]
     # print(onlyfiles)

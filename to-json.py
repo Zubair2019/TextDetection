@@ -66,7 +66,7 @@ def cropping(FILE, x,y,width,height): #Funtion to crop image and return multiple
 # Driver Code
 if __name__ == "__main__":
     mypath = os.path.realpath(__file__)
-    mypath = mypath.replace('to-json.py','output/')
+    mypath = mypath.replace('to-json.py','images/')
     # print(mypath)
     lst = glob.glob(mypath+"*.xml")
     # print(lst)
