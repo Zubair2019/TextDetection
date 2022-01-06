@@ -6,6 +6,7 @@ import json
 import cv2
 import pytesseract
 from pytesseract import Output
+from tqdm import tqdm
 
 
 def parseXML(path):
@@ -41,7 +42,7 @@ def parseXML(path):
     mypath = mypath.replace('to-json.py','output/')
     # print(mypath)
     mypath = mypath+str(path).split('.')[0].split('/')[-1]+'.json'
-    print(mypath)
+    # print(mypath)
     with open(mypath, "w") as json_file:
         json_file.write(json_data)
         json_file.close()
@@ -70,6 +71,8 @@ if __name__ == "__main__":
     # print(mypath)
     lst = glob.glob(mypath+"*.xml")
     # print(lst)
+    
     for item in lst:
+        for i in tqdm (range(len(lst)), desc="Extracting Text..."):
         # print(item)
-        parseXML(item)
+            parseXML(item)
