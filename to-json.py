@@ -16,19 +16,13 @@ the unnecessary information and saves the output as a json file
 '''
 def parseXML(path):
     # open the xml file for reading
+    dictionary = {}
+    text, left, top, height, width = [],[],[],[],[]
     with open(path) as xml_file:
         data_dict = xmltodict.parse(xml_file.read())
     xml_file.close()
     object_length = len(data_dict["annotation"]["object"])
-    # print(object_length)
 
-    # The following del statements delete the unnecessary information
-    del data_dict["annotation"]["folder"]
-    del data_dict["annotation"]["filename"]
-    del data_dict["annotation"]["source"]
-    del data_dict["annotation"]["size"]
-    del data_dict["annotation"]["segmented"]
-    
     #The following code block created a directory for each image to store individual crops
     try:
         temp_path = str(path).replace('images','temp').split('.')[0]
@@ -38,19 +32,23 @@ def parseXML(path):
 
     # for loop for deleting and adding info to json
     for j in range(object_length):
-        # del data_dict["annotation"]["object"][j]["name"]
-        del data_dict["annotation"]["object"][j]["pose"]
-        del data_dict["annotation"]["object"][j]["truncated"]
-        del data_dict["annotation"]["object"][j]["difficult"]
-        
         xmin, ymin, xmax, ymax = int(data_dict["annotation"]["object"][j]["bndbox"]["xmin"]),\
             int(data_dict["annotation"]["object"][j]["bndbox"]["ymin"]),\
                 int(data_dict["annotation"]["object"][j]["bndbox"]["xmax"]),\
                     int(data_dict["annotation"]["object"][j]["bndbox"]["ymax"]),
-        data_dict["annotation"]["object"][j]["name"] = cropping(data_dict["annotation"]["path"],xmin,ymin,xmax-xmin,ymax-ymin)
+        text.append(cropping(data_dict["annotation"]["path"],xmin,ymin,xmax-xmin,ymax-ymin))
+        left.append(xmin)
+        top.append(ymin)
+        width.append(xmax-xmin)
+        height.append(ymax-ymin)
+    dictionary.update({"left":left})
+    dictionary.update({"top":top})
+    dictionary.update({"height":height})
+    dictionary.update({"width":width})
+    dictionary.update({"text":text})
+    # print(dictionary)
 
-
-    json_data = json.dumps(data_dict)
+    json_data = json.dumps(dictionary)
     # Write the json data to output
     mypath = os.path.realpath(__file__)
     mypath = mypath.replace('to-json.py','output/')
@@ -58,7 +56,7 @@ def parseXML(path):
     mypath = mypath+str(path).split('.')[0].split('/')[-1]+'.json'
     # print(mypath)
 
-    '''Write the json file'''
+    #Write the json file
     with open(mypath, "w") as json_file:
         json_file.write(json_data)
         json_file.close()
@@ -118,7 +116,6 @@ if __name__ == "__main__":
     mypath = mypath.replace('to-json.py','images/')
     # print(mypath)
     lst = glob.glob(mypath+"*.xml")
-    # print(lst)
     cur_time = time.time()
     # print("Start time: ",cur_time)
     for item,z in zip(lst,tqdm(range(len(lst)), desc="Extracting Text...")):
