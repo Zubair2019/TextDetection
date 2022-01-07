@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 
 def extract_text(input_path, config):
-    print("Input path:", input_path)
+    # print("Input path:", input_path)
     output_path = input_path.replace('images','annotated')
     img = cv2.imread(input_path)
     results = pytesseract.image_to_data(img, config=config, output_type=Output.DICT)
@@ -49,12 +49,13 @@ def make_json(input_path, output_path, results):
     output_path = str(output_path).split(".")[0]+'.json'
     for i in range(0, len(results["text"])):
 
-        # conf = int(results["conf"][i])
-        text.append(results["text"][i])
-        left.append(results["left"][i])
-        top.append(results["top"][i])
-        width.append(results["width"][i]-results["left"][i])
-        height.append(results["height"][i]-results["top"][i])
+        conf = int(results["conf"][i])
+        if conf>40:
+            text.append(results["text"][i])
+            left.append(results["left"][i])
+            top.append(results["top"][i])
+            width.append(results["width"][i])
+            height.append(results["height"][i])
     dictionary.update({"left":left})
     dictionary.update({"top":top})
     dictionary.update({"height":height})
@@ -68,12 +69,10 @@ def make_json(input_path, output_path, results):
         json_file.write(json_data)
         json_file.close()
 
-
-
 if __name__ == '__main__':
     mypath = os.path.realpath(__file__)
     mypath = mypath.replace('extract-text.py','images/')
     lst = glob.glob(mypath+"*.jpg")
-    for item,z in zip(lst,tqdm(range(len(lst)), desc="Extracting Text...")):
+    for item,z in zip(lst,tqdm(range(len(lst)), desc="Writing text to json file...")):
         extract_text(item, config = ('-l eng --oem 1 --psm 3'))
    
