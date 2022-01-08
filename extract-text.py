@@ -69,6 +69,10 @@ def make_json(input_path, output_path, results):
         json_file.write(json_data)
         json_file.close()
 
+
+def compare():
+    print("Hello")
+
 if __name__ == '__main__':
     mypath = os.path.realpath(__file__)
     mypath = mypath.replace('extract-text.py','images/')
