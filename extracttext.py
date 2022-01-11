@@ -6,7 +6,7 @@ import json
 import glob
 import tqdm
 from tqdm import tqdm
-
+from compare import *
 
 
 def extract_text(input_path, config):
@@ -70,8 +70,7 @@ def make_json(input_path, output_path, results):
         json_file.close()
 
 
-def compare():
-    print("Hello")
+
 
 if __name__ == '__main__':
     mypath = os.path.realpath(__file__)
