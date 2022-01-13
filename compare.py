@@ -23,15 +23,20 @@ def read_json():
 		
 def compare_text(dic1,dic2):
 	count = 0
-	for i in range (len(dic1["text"])):
-		# print("DICT---",dic1,'------',dic2)
-		if dic1["text"][i] in dic2["text"]:
-			j = list(dic2["text"]).index(dic1["text"][i])
-			box_a = [dic1["left"][i],dic1["top"][i],dic1["left"][i]+dic1["width"][i],dic1["top"][i]+dic1["height"][i]]
-			box_b = [dic2["left"][j],dic2["top"][j],dic2["left"][j]+dic2["width"][j],dic2["top"][j]+dic2["height"][j]]
-			print(i,j,dic1["text"][i],dic2["text"][j],box_a,box_b,bb_intersection_over_union(box_a,box_b))
-			count += 1
-	# print(count,len(dic1["text"]))
+	for k in range(2):
+		for i in range (len(dic1["text"])):
+			# print("DICT---",dic1,'------',dic2)
+			if dic1["text"][i] in dic2["text"]:
+				j = list(dic2["text"]).index(dic1["text"][i])
+				box_a = [dic1["left"][i],dic1["top"][i],dic1["left"][i]+dic1["width"][i],dic1["top"][i]+dic1["height"][i]]
+				box_b = [dic2["left"][j],dic2["top"][j],dic2["left"][j]+dic2["width"][j],dic2["top"][j]+dic2["height"][j]]
+				print(i,j,dic1["text"][i],dic2["text"][j],box_a,box_b, bb_intersection_over_union(box_a,box_b))
+				if bb_intersection_over_union(box_a,box_b) >0.30:
+					# del dic1["left"][i],dic1["top"][i],dic1["width"][i],dic1["height"][i],dic1["text"][i]
+					del dic2["left"][j],dic2["top"][j],dic2["width"][j],dic2["height"][j],dic2["text"][j]
+				# print(i,j,dic1["text"][i],dic2["text"][j],box_a,box_b,bb_intersection_over_union(box_a,box_b))
+				count += 1
+	print(count,len(dic1["text"]))
 def bb_intersection_over_union(boxA, boxB):
 	# determine the (x, y)-coordinates of the intersection rectangle
 	xA = max(boxA[0], boxB[0])
