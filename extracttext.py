@@ -61,9 +61,6 @@ def make_json(input_path, output_path, results):
     dictionary.update({"height":height})
     dictionary.update({"width":width})
     dictionary.update({"text":text})
-
-    
-    
     json_data = json.dumps(dictionary)
     with open(output_path, "w") as json_file:
         json_file.write(json_data)

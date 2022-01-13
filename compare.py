@@ -6,6 +6,8 @@ from colors import *
 
 # Function reads the json files from output and annotated folder for comparison
 def read_json():
+	right = 0
+	wrong = 0
 	mypath = os.path.realpath(__file__)
 	gtpath = mypath.replace('compare.py','output/') #Ground truth files are in output folder 
 	genpath = mypath.replace('compare.py','annotated/') # Generated files are in annotted folder
@@ -19,12 +21,19 @@ def read_json():
 			with open(item2, "r") as json_file:
 				dict2 = json.load(json_file)
 			correct, incorrect = compare_text(dict1,dict2)
-			print(bcolors.WARNING+'File:'+ str(item2)+bcolors.ENDC,bcolors.OKGREEN+'Correct:--'+str(correct),bcolors.FAIL+bcolors.BOLD+'Incorrect:--'+str(incorrect)+bcolors.ENDC)
+			right += correct
+			wrong += incorrect
+			print(bcolors.OKCYAN+'File:'+ str(item2)+bcolors.ENDC,bcolors.OKGREEN+'Correct:--'+\
+				str(correct),bcolors.FAIL+bcolors.BOLD+'Incorrect:--'+str(incorrect)+bcolors.ENDC)
 		else:
 			print("File name doesn't Match")
-		
+	print(bcolors.WARNING+bcolors.BOLD+'Total Right:--'+str(right)+'  Total Wrong:--'\
+		+str(wrong)+'  Total:--'+str(right+wrong)+'  Percentage Correct:--'+str((right/(right+wrong))*100)+bcolors.ENDC)
+	return (right/(right+wrong))*100
 
-		#Function to compare dic1 and dic2 and return the correct and incorrect instances of text
+
+
+#Function to compare dic1 and dic2 and return the correct and incorrect instances of text
 def compare_text(dic1,dic2): 
 	count = 0
 	for k in range(2): #second iteration to look for multiple occurences of a word
@@ -64,5 +73,5 @@ def bb_intersection_over_union(boxA, boxB):
 
 
 if __name__ == '__main__':
-	read_json()
+	print(bcolors.BOLD + str(read_json()))
 	
