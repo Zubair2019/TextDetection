@@ -6,8 +6,9 @@ from colors import *
 
 # Function reads the json files from output and annotated folder for comparison
 def read_json():
-	right = 0
-	wrong = 0
+	TP = 0
+	FP = 0
+	FN = 0
 	mypath = os.path.realpath(__file__)
 	gtpath = mypath.replace('compare.py','output/') #Ground truth files are in output folder 
 	genpath = mypath.replace('compare.py','annotated/') # Generated files are in annotted folder
@@ -20,22 +21,25 @@ def read_json():
 				dict1 = json.load(json_file)
 			with open(item2, "r") as json_file:
 				dict2 = json.load(json_file)
-			correct, incorrect = compare_text(dict1,dict2)
-			right += correct
-			wrong += incorrect
+			correct, incorrect, missed = compare_text(dict1,dict2)
+			TP += correct
+			FP += incorrect
+			FN += missed
 			print(bcolors.OKCYAN+'File:'+ str(item2)+bcolors.ENDC,bcolors.OKGREEN+'Correct:--'+\
-				str(correct),bcolors.FAIL+bcolors.BOLD+'Incorrect:--'+str(incorrect)+bcolors.ENDC)
+				str(correct),bcolors.FAIL+bcolors.BOLD+'Incorrect:--'+str(incorrect)+'  Missed:--'+str(missed)+bcolors.ENDC)
 		else:
 			print("File name doesn't Match")
-	print(bcolors.WARNING+bcolors.BOLD+'Total Right:--'+str(right)+'  Total Wrong:--'\
-		+str(wrong)+'  Total:--'+str(right+wrong)+'  Percentage Correct:--'+str((right/(right+wrong))*100)+bcolors.ENDC)
-	return (right/(right+wrong))*100
+	print(bcolors.WARNING+bcolors.BOLD+'TP:--'+str(TP)+'  FP:--'\
+		+str(FP)+'  FN:--'+str(FN)+'  Total Annotated:--'+str(TP+FP)+'  Percentage Correct:--'+\
+			str(((TP)/(TP+FP+FN))*100)+bcolors.ENDC)
+	return (TP/(TP+FP))*100
 
 
 
 #Function to compare dic1 and dic2 and return the correct and incorrect instances of text
 def compare_text(dic1,dic2): 
 	count = 0
+	missed = 0
 	for k in range(2): #second iteration to look for multiple occurences of a word
 		for i in range (len(dic1["text"])):
 			# print("DICT---",dic1,'------',dic2)
@@ -43,12 +47,16 @@ def compare_text(dic1,dic2):
 				j = list(dic2["text"]).index(dic1["text"][i])
 				box_a = [dic1["left"][i],dic1["top"][i],dic1["left"][i]+dic1["width"][i],dic1["top"][i]+dic1["height"][i]]
 				box_b = [dic2["left"][j],dic2["top"][j],dic2["left"][j]+dic2["width"][j],dic2["top"][j]+dic2["height"][j]]
-				# print(i,j,dic1["text"][i],dic2["text"][j],box_a,box_b, bb_intersection_over_union(box_a,box_b))
+				print(i,j,dic1["text"][i],dic2["text"][j],box_a,box_b, bb_intersection_over_union(box_a,box_b))
 				if bb_intersection_over_union(box_a,box_b) >0.30:
 					del dic2["left"][j],dic2["top"][j],dic2["width"][j],dic2["height"][j],dic2["text"][j]
+					# del dic1["left"][i],dic1["top"][i],dic1["width"][i],dic1["height"][i],dic1["text"][i]
 					count += 1
+			else:
+				if k==0:
+					missed += 1
 	# print(count,len(dic2["text"]),len(dic1["text"])) # 'len(dic2["text"]' represents incorect detections
-	return count, len(dic2["text"])
+	return count, len(dic2["text"]),missed
 
 
 # Function to find the intersection over union of two boxes
