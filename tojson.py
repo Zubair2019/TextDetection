@@ -113,7 +113,7 @@ def check_blackness(image):
 # Driver Code
 if __name__ == "__main__":
     mypath = os.path.realpath(__file__)
-    mypath = mypath.replace('to-json.py','images/')
+    mypath = mypath.replace('tojson.py','images/')
     # print(mypath)
     lst = glob.glob(mypath+"*.xml")
     cur_time = time.time()

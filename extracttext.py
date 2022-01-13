@@ -26,9 +26,9 @@ def extract_text(input_path, config):
         # extract the OCR text itself along with the confidence of the text localization
         text = results["text"][i]
         conf = int(results["conf"][i])
-
+        # print(text,conf)
         # filter out weak confidence text localizations
-        if conf > 20:
+        if conf > 80:
             # display the confidence and text to our terminal
             # print("Confidence: {}".format(conf))
             # print("Text: {}".format(text))
@@ -38,7 +38,7 @@ def extract_text(input_path, config):
             text = "".join([c if ord(c) < 128 else "" for c in text]).strip()
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
             cv2.putText(img, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX,0.6, (0, 0, 0), 3)
-            cv2.imwrite(output_path, img)
+        cv2.imwrite(output_path, img)
     # cv2.imshow("Image", img)
     # cv2.waitKey(0)
 
@@ -50,7 +50,7 @@ def make_json(input_path, output_path, results):
     for i in range(0, len(results["text"])):
 
         conf = int(results["conf"][i])
-        if conf>40:
+        if conf>80:
             text.append(results["text"][i])
             left.append(results["left"][i])
             top.append(results["top"][i])
@@ -74,7 +74,7 @@ def make_json(input_path, output_path, results):
 
 if __name__ == '__main__':
     mypath = os.path.realpath(__file__)
-    mypath = mypath.replace('extract-text.py','images/')
+    mypath = mypath.replace('extracttext.py','images/')
     lst = glob.glob(mypath+"*.jpg")
     for item,z in zip(lst,tqdm(range(len(lst)), desc="Writing text to json file...")):
         extract_text(item, config = ('-l eng --oem 1 --psm 3'))

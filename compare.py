@@ -35,8 +35,8 @@ def compare_text(dic1,dic2):
 					# del dic1["left"][i],dic1["top"][i],dic1["width"][i],dic1["height"][i],dic1["text"][i]
 					del dic2["left"][j],dic2["top"][j],dic2["width"][j],dic2["height"][j],dic2["text"][j]
 				# print(i,j,dic1["text"][i],dic2["text"][j],box_a,box_b,bb_intersection_over_union(box_a,box_b))
-				count += 1
-	print(count,len(dic1["text"]))
+					count += 1
+	print(count,len(dic2["text"]),len(dic1["text"]))
 def bb_intersection_over_union(boxA, boxB):
 	# determine the (x, y)-coordinates of the intersection rectangle
 	xA = max(boxA[0], boxB[0])
