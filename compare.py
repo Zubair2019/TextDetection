@@ -1,7 +1,15 @@
+import os
+import glob
+from tqdm import tqdm
 
-
-
-
+def read_json():
+	mypath = os.path.realpath(__file__)
+	gtpath = mypath.replace('compare.py','output/')
+	genpath = mypath.replace('compare.py','annotated/')
+	lst1 = glob.glob(gtpath+"*.json")
+	lst2 = glob.glob(genpath+"*.json")
+	for item1,item2 in zip(lst1,lst2):
+		print(item1,item2)
 def bb_intersection_over_union(boxA, boxB):
 	# determine the (x, y)-coordinates of the intersection rectangle
 	xA = max(boxA[0], boxB[0])
@@ -20,3 +28,12 @@ def bb_intersection_over_union(boxA, boxB):
 	iou = interArea / float(boxAArea + boxBArea - interArea)
 	# return the intersection over union value
 	return iou
+
+
+
+
+
+
+if __name__ == '__main__':
+	read_json()
+	
