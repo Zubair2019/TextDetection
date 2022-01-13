@@ -1,3 +1,6 @@
 temp/
 annotated/
+input/
+output/
+images/
 .DS_Store
