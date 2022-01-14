@@ -81,5 +81,5 @@ def bb_intersection_over_union(boxA, boxB):
 
 
 if __name__ == '__main__':
-	print(bcolors.BOLD + str(read_json()))
+	print(bcolors.BOLD + str(read_json()) + bcolors.ENDC)
 	
