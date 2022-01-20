@@ -7,7 +7,7 @@ import cv2
 import pytesseract
 from pytesseract import Output
 from tqdm import tqdm
-import datetime
+import random
 import time
 import numpy as np
 
@@ -51,7 +51,7 @@ def parseXML(path):
     json_data = json.dumps(dictionary)
     # Write the json data to output
     mypath = os.path.realpath(__file__)
-    mypath = mypath.replace('to-json.py','output/')
+    mypath = mypath.replace('tojson.py','output/')
     # print(mypath)
     mypath = mypath+str(path).split('.')[0].split('/')[-1]+'.json'
     # print(mypath)
@@ -95,7 +95,7 @@ def cropping(FILE, x,y,width,height): #Funtion to crop image and return multiple
         #     print("Confidence: {}".format(conf))
         #     print("Text: {}".format(string))
         temp_path1 = str(FILE).replace('images','temp').split('.')[0]
-    cv2.imwrite(temp_path1+'/'+string+".jpg", gray)
+    cv2.imwrite(temp_path1+'/'+string+'-------'+ str(random.randint(0,99))+".jpg", gray)
 
     return string
 
