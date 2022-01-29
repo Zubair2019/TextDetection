@@ -3,4 +3,8 @@ annotated/
 input/
 output/
 images/
+data/
+100/
+inputimages/
+inputjson/
 .DS_Store

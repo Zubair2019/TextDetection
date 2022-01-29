@@ -95,7 +95,7 @@ def cropping(FILE, x,y,width,height): #Funtion to crop image and return multiple
         #     print("Confidence: {}".format(conf))
         #     print("Text: {}".format(string))
         temp_path1 = str(FILE).replace('images','temp').split('.')[0]
-    cv2.imwrite(temp_path1+'/'+string+'-------'+ str(random.randint(0,99))+".jpg", gray)
+    cv2.imwrite(temp_path1+'/'+string+'--'+ str(random.randint(0,99))+".jpg", gray)
 
     return string
 
